@@ -32,8 +32,15 @@ const styles = StyleSheet.create({
   }
 })
 export default class App extends React.Component {
-  state = {
-    userID: -1
+
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      userID: -1
+    }
+    global.userIDset = false;
+
   }
   async componentDidMount(){
     const value = await AsyncStorage.getItem('userID');
@@ -43,7 +50,7 @@ export default class App extends React.Component {
   render() {
     const {userID} = this.state
     console.log("userID:" + userID);
-    if(userID == -1){
+    if(userID > 0 || global.userIDset){
       return (
         <Swiper ref='swiper' loop={false} showsPagination={false} index={0} removeClippedSubviews={true}>
         <View style={{flex: 1}}>
@@ -59,6 +66,7 @@ export default class App extends React.Component {
       </Swiper>
       );
     }else{
+
       return (
       <View style={{flex: 1}}>
           <ConfigCamera>
