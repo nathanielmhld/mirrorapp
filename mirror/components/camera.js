@@ -38,6 +38,7 @@ class CameraComponent extends Component{
   if (this.camera) {
 
     let photo = await this.camera.takePictureAsync();
+    let userId = await AsyncStorage.getItem('userID');
 
     var random = Math.floor(Math.random() * 100000000)
     var image_file_name = "image" + random + ".jpg";
@@ -57,6 +58,7 @@ class CameraComponent extends Component{
   	if (response.status !== 201)
     	throw new Error("Failed to upload image to S3");
 
+
     fetch('https://rocky-anchorage-68937.herokuapp.com/image', {
        method: 'POST',
        headers: {
@@ -65,7 +67,7 @@ class CameraComponent extends Component{
       },
       body: JSON.stringify({
         'image_uri': image_file_name,
-        'uid' : 0,
+        'uid' : userId,
         'default_image': false
       }),
       })

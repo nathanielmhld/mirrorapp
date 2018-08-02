@@ -5,7 +5,17 @@ import {Container, Content, Header, Item, Icon, Input, Button } from "native-bas
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import { RNS3 } from 'react-native-aws3';
 
-class ConfigCamera extends Component{
+const options = {
+  keyPrefix: "uploads/",
+  bucket: "mirrormediacontent",
+  region: "us-west-1",
+  accessKey: "AKIAJ4F5SKLYMHOXOJMQ",
+  secretKey: "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",
+  successActionStatus: 201,
+  contentType: "image/jpeg"
+}
+
+class ConfigCamera extends Component {
 
 	state = {
 		hasCameraPermission: null,
@@ -21,7 +31,7 @@ class ConfigCamera extends Component{
 	}
 	snap = async () => {
   if (this.camera) {
-  	
+
     let photo = await this.camera.takePictureAsync();
     userID =  Math.floor(Math.random() * 100000000);
     try {
@@ -32,10 +42,11 @@ class ConfigCamera extends Component{
   	}
   	console.log("Recorded the location of a photo: " + photo["uri"]);
     //CameraRoll.saveToCameraRoll(photo["uri"]);
+    let image_file_name = "image" + userID + ".jpg";
     const file = {
 	  // `uri` can also be a file system path (i.e. file://)
 	  uri: photo["uri"],
-	  name: "image.jpg",
+	  name: image_file_name,
 	  type: "image/jpeg"
 	}
 	console.log(options);
@@ -44,8 +55,30 @@ class ConfigCamera extends Component{
     console.log(response.body);
   	if (response.status !== 201)
     	throw new Error("Failed to upload image to S3");
+    fetch('https://rocky-anchorage-68937.herokuapp.com/image', {
+       method: 'POST',
+       headers: {
+       Accept: 'application/json',
+      'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'image_uri': image_file_name,
+        'uid' : userID,
+        'default_image': true
+      }),
+      })
+
+      //.then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
     CameraRoll.saveToCameraRoll(photo["uri"]);
-  		})
+  		});
+
   }
 };
 

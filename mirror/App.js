@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 })
 export default class App extends React.Component {
   state = {
-    userID: null
+    userID: -1
   }
   async componentDidMount(){
     const value = await AsyncStorage.getItem('userID');
@@ -42,7 +42,8 @@ export default class App extends React.Component {
   }
   render() {
     const {userID} = this.state
-    if(userID){
+    console.log("userID:" + userID);
+    if(userID == -1){
       return (
         <Swiper ref='swiper' loop={false} showsPagination={false} index={0} removeClippedSubviews={true}>
         <View style={{flex: 1}}>
@@ -52,9 +53,9 @@ export default class App extends React.Component {
         <View style={{flex: 1}}>
           <MediaComponent>
           </MediaComponent>
-          
+
         </View>
-        
+
       </Swiper>
       );
     }else{
