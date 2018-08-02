@@ -25,7 +25,7 @@ class CameraComponent extends Component{
     CameraRoll.saveToCameraRoll(photo["uri"]);
   }
 };
-	
+
 	render(){
 		const {hasCameraPermission} = this.state
 		if(hasCameraPermission === null)
@@ -39,17 +39,15 @@ class CameraComponent extends Component{
 			return(
 
 			<View style={{flex:1}}>
-			
-			<Camera style={{flex:1}} type={this.state.type} ref={ref => { this.camera = ref; }}>
-			<View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between'}}>
-			<TouchableOpacity onPress={this.snap}>
-			<MaterialCommunityIcons name="circle-outline" style={{color:'white', fontSize: 100}}></MaterialCommunityIcons>
-			</TouchableOpacity>
+				<Camera style={{flex:1}} type={this.state.type} ref={ref => { this.camera = ref; }}>
+				<View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between'}}>
+					<TouchableOpacity onPress={this.snap}>
+					<MaterialCommunityIcons name="circle-outline" style={{color:'white', fontSize: 100}}></MaterialCommunityIcons>
+					</TouchableOpacity>
+				</View>
+				</Camera>
 			</View>
-			</Camera>
-			
-			</View>
-			
+
 			)
 		}
 	}
