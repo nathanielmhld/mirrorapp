@@ -45,11 +45,11 @@ export default class App extends React.Component {
 
 
   }
- /* async componentDidMount(){
+  async componentDidMount(){
     const value = await AsyncStorage.getItem('userID');
     this.setState({userID: value})
     console.log(value)
-  }*/
+  }
 
   async reconfigure(){
     await AsyncStorage.removeItem('userID');
