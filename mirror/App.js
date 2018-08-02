@@ -1,10 +1,12 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, AsyncStorage, Image } from 'react-native';
 import {Permissions} from 'expo';
 import {Container, Content} from 'native-base';
-import Swiper from 'react-native-swiper'
+import Swiper from 'react-native-swiper';
 
-import CameraComponent from './components/camera'
+import CameraComponent from './components/camera';
+
+import ConfigCamera from './components/configcamera';
 
 const styles = StyleSheet.create({
   slideDefault:{
@@ -31,7 +33,6 @@ const styles = StyleSheet.create({
 export default class App extends React.Component {
 
   render() {
-
       return (
         <Swiper ref='swiper' loop={false} showsPagination={false} index={0} removeClippedSubviews={true}>
         <View style={{flex: 1}}>
@@ -40,10 +41,11 @@ export default class App extends React.Component {
         </View>
         <View style={styles.slide1}>
           <Text style={styles.text}>Beautiful</Text>
+          
         </View>
         
       </Swiper>
       );
-
-  }
+      
+    }
 }
