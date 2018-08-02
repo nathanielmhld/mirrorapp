@@ -4,7 +4,7 @@ import {Permissions} from 'expo';
 import {Container, Content} from 'native-base';
 import Swiper from 'react-native-swiper'
 
-import Camera from './components/camera'
+import CameraComponent from './components/camera'
 
 const styles = StyleSheet.create({
   slideDefault:{
@@ -23,8 +23,8 @@ export default class App extends React.Component {
           <Content>
             <Swiper showsPagination={false}>
           <View style={{flex: 1}}>
-            <Camera>
-            </Camera>
+            <CameraComponent>
+            </CameraComponent>
           </View>
           <View style={styles.slideDefault}>
                 <Text>
