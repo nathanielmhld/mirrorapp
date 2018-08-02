@@ -38,7 +38,7 @@ export default class App extends React.Component {
   async componentDidMount(){
     const value = await AsyncStorage.getItem('userID');
     this.setState({userID: value})
-
+    console.log(value)
   }
   render() {
     const {userID} = this.state

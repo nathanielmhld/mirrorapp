@@ -33,7 +33,7 @@ class ConfigCamera extends Component {
   if (this.camera) {
 
     let photo = await this.camera.takePictureAsync();
-    userID =  Math.floor(Math.random() * 100000000);
+    userID =  String(Math.floor(Math.random() * 1000));
     try {
 
     await AsyncStorage.setItem('userID', userID);
@@ -76,7 +76,7 @@ class ConfigCamera extends Component {
       console.error(error);
     });
 
-    CameraRoll.saveToCameraRoll(photo["uri"]);
+    this.forceUpdate();
   		});
 
   }
