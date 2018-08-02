@@ -1,56 +1,41 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
-import { Camera, Permissions } from 'expo';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import {Permissions} from 'expo';
+import {Container, Content} from 'native-base';
+import Swiper from 'react-native-swiper'
 
-export default class CameraExample extends React.Component {
-  state = {
-    hasCameraPermission: null,
-    type: Camera.Constants.Type.back,
-  };
+import Camera from './components/camera'
 
-  async componentWillMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
+const styles = StyleSheet.create({
+  slideDefault:{
+    flex:1,
+    justifyContent:"center",
+    alignItems:"center",
+    backgroundColor:"#9DD6EB"
   }
+})
+export default class App extends React.Component {
 
   render() {
-    const { hasCameraPermission } = this.state;
-    if (hasCameraPermission === null) {
-      return <View />;
-    } else if (hasCameraPermission === false) {
-      return <Text>No access to camera</Text>;
-    } else {
+    
       return (
-        <View style={{ flex: 1 }}>
-          <Camera style={{ flex: 1 }} type={this.state.type}>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-                flexDirection: 'row',
-              }}>
-              <TouchableOpacity
-                style={{
-                  flex: 0.1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                }}
-                onPress={() => {
-                  this.setState({
-                    type: this.state.type === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back,
-                  });
-                }}>
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-                  {' '}Flip{' '}
+        <Container>
+          <Content>
+            <Swiper showsPagination={false}>
+          <View style={{flex: 1}}>
+            <Camera>
+            </Camera>
+          </View>
+          <View style={styles.slideDefault}>
+                <Text>
+                  Other folks stuff
                 </Text>
-              </TouchableOpacity>
-            </View>
-          </Camera>
-        </View>
+           </View>
+              
+            </Swiper>
+          </Content>
+        </Container>
       );
-    }
+    
   }
 }

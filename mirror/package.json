@@ -9,8 +9,12 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "components": "^0.1.0",
     "expo": "^29.0.0",
+    "native-base": "^2.7.2",
     "react": "16.3.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-29.0.0.tar.gz"
+    "react-native": "https://github.com/expo/react-native/archive/sdk-29.0.0.tar.gz",
+    "react-native-gesture-handler": "^1.0.7",
+    "react-native-swiper": "^1.5.13"
   }
 }
