@@ -3,51 +3,39 @@ import {View, Text, StyleSheet, TouchableOpacity, CameraRoll, AsyncStorage} from
 import {Camera, Permissions, GestureHandler} from 'expo'
 import {Container, Content, Header, Item, Icon, Input, Button } from "native-base"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
-
 import { RNS3 } from 'react-native-aws3';
 
-const options = {
-  keyPrefix: "uploads/",
-  bucket: "mirrormediacontent",
-  region: "us-west-1",
-  accessKey: "AKIAJ4F5SKLYMHOXOJMQ",
-  secretKey: "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",
-  successActionStatus: 201,
-  contentType: "image/jpeg"
-}
-
-
-
-class CameraComponent extends Component{
+class ConfigCamera extends Component{
 
 	state = {
 		hasCameraPermission: null,
 		hasPhotosPermission: null,
-		type: Camera.Constants.Type.back,
-	}
+		type: Camera.Constants.Type.front
 
+	}
 
 	async componentWillMount(){
 		const {status} = await Permissions.askAsync(Permissions.CAMERA);
 		await Permissions.askAsync(Permissions.CAMERA_ROLL);
 		this.setState({hasCameraPermission: status === 'granted'})
-
 	}
-
 	snap = async () => {
   if (this.camera) {
-
+  	
     let photo = await this.camera.takePictureAsync();
+    userID =  Math.floor(Math.random() * 100000000);
+    try {
 
-    var random = Math.floor(Math.random() * 100000000)
-    var image_file_name = "image" + random + ".jpg";
-
-    console.log("Took a picture: " + photo["uri"]);
-
+    await AsyncStorage.setItem('userID', userID);
+  	} catch (error) {
+  		console.log("Error using storage");
+  	}
+  	console.log("Recorded the location of a photo: " + photo["uri"]);
+    //CameraRoll.saveToCameraRoll(photo["uri"]);
     const file = {
 	  // `uri` can also be a file system path (i.e. file://)
 	  uri: photo["uri"],
-	  name: image_file_name,
+	  name: "image.jpg",
 	  type: "image/jpeg"
 	}
 	console.log(options);
@@ -56,32 +44,10 @@ class CameraComponent extends Component{
     console.log(response.body);
   	if (response.status !== 201)
     	throw new Error("Failed to upload image to S3");
-
-    fetch('https://rocky-anchorage-68937.herokuapp.com/image', {
-       method: 'POST',
-       headers: {
-       Accept: 'application/json',
-      'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        'image_uri': image_file_name,
-        'uid' : 0,
-        'default_image': false
-      }),
-      })
-
-      //.then((response) => response.json())
-      .then((responseJson) => {
-      	console.log(responseJson);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
     CameraRoll.saveToCameraRoll(photo["uri"]);
-
-  });
-}};
-
+  		})
+  }
+};
 
 	render(){
 		const {hasCameraPermission} = this.state
@@ -97,6 +63,9 @@ class CameraComponent extends Component{
 
 			<View style={{flex:1}}>
 				<Camera style={{flex:1}} type={this.state.type} ref={ref => { this.camera = ref; }}>
+				<View style={{position: 'absolute', left: 0, right: 0, top: 15, alignItems: 'center', justifyContent: 'center'}}>
+					<Text style={{color:'white', fontSize: 40}}>First, we need a selfie!</Text>
+				</View>
 				<View style={{position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'}}>
 					<TouchableOpacity onPress={this.snap}>
 					<MaterialCommunityIcons name="circle-outline" style={{color:'white', fontSize: 100}}></MaterialCommunityIcons>
@@ -113,5 +82,5 @@ class CameraComponent extends Component{
 
 
 
-export default CameraComponent
+export default ConfigCamera
 
