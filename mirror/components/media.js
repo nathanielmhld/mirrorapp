@@ -20,10 +20,10 @@ class MediaComponent extends Component{
     }
 	}
 	async scrollForward(e){
-		this.setState({displayphoto: "https://s3-us-west-1.amazonaws.com/mirrormediacontent/uploads/image207.jpg"});
+		this.setState({displayphoto: "https://s3-us-west-1.amazonaws.com/mirrormediacontent/uploads/image18259145.jpg"});
 	}
 	async scrollBack(e){
-		this.setState({displayphoto: "https://mirrormediacontent.s3.amazonaws.com/uploads%2Fimage.jpg"});
+		this.setState({displayphoto: "https://s3-us-west-1.amazonaws.com/mirrormediacontent/uploads/image67565383.jpg"});
 	}
 	async save(e){
 		console.log(this.state.displayphoto);
@@ -35,9 +35,9 @@ class MediaComponent extends Component{
 			<View style={{flex:1}}>
 				<ImageBackground style={{flex: 1, flexDirection: 'row'}}
 				source={{uri: this.state.displayphoto}} alt="Image1">
-				
+
 				<TouchableOpacity style={{width: "30%", height: "100%",  opacity: 0, backgroundColor: '#FFFFFF'}} onPress={e => this.scrollBack(e)}>
-				
+
 				</TouchableOpacity>
 				<TouchableOpacity style={{width: "70%", height: "100%", opacity: 0, backgroundColor: '#FFFFFF'}} onPress={e => this.scrollForward(e)}>
 				</TouchableOpacity>
