@@ -1,8 +1,21 @@
 import React, { Component } from "react";
-import {View, Text, StyleSheet, TouchableOpacity, CameraRoll} from "react-native";
+import {View, Text, StyleSheet, TouchableOpacity, CameraRoll, AsyncStorage} from "react-native";
 import {Camera, Permissions, GestureHandler} from 'expo'
 import {Container, Content, Header, Item, Icon, Input, Button } from "native-base"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+
+import { RNS3 } from 'react-native-aws3';
+
+const options = {
+  keyPrefix: "uploads/",
+  bucket: "mirrormediacontent",
+  region: "us-west-1",
+  accessKey: "AKIAJ4F5SKLYMHOXOJMQ",
+  secretKey: "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",
+  successActionStatus: 201,
+  contentType: "image/jpeg"
+}
+
 
 
 class CameraComponent extends Component{
@@ -10,22 +23,38 @@ class CameraComponent extends Component{
 	state = {
 		hasCameraPermission: null,
 		hasPhotosPermission: null,
-		type: Camera.Constants.Type.back
+		type: Camera.Constants.Type.back,
 	}
+
 
 	async componentWillMount(){
 		const {status} = await Permissions.askAsync(Permissions.CAMERA);
 		await Permissions.askAsync(Permissions.CAMERA_ROLL);
 		this.setState({hasCameraPermission: status === 'granted'})
+
 	}
+
 	snap = async () => {
   if (this.camera) {
   	
     let photo = await this.camera.takePictureAsync();
     console.log("Took a picture: " + photo["uri"]);
+
+    const file = {
+	  // `uri` can also be a file system path (i.e. file://)
+	  uri: photo["uri"],
+	  name: "image.jpg",
+	  type: "image/jpeg"
+	}
+	console.log(options);
+    RNS3.put(file, options).then(response => {
+    console.log(response);
+    console.log(response.body);
+  	if (response.status !== 201)
+    	throw new Error("Failed to upload image to S3");
     CameraRoll.saveToCameraRoll(photo["uri"]);
-  }
-};
+  		})
+	}}
 
 	render(){
 		const {hasCameraPermission} = this.state

@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity, CameraRoll, AsyncStorage} from
 import {Camera, Permissions, GestureHandler} from 'expo'
 import {Container, Content, Header, Item, Icon, Input, Button } from "native-base"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
-
+import { RNS3 } from 'react-native-aws3';
 
 class ConfigCamera extends Component{
 
@@ -23,13 +23,29 @@ class ConfigCamera extends Component{
   if (this.camera) {
   	
     let photo = await this.camera.takePictureAsync();
+    userID =  Math.floor(Math.random() * 100000000);
     try {
-    await AsyncStorage.setItem('configPhoto', photo["uri"]);
+
+    await AsyncStorage.setItem('userID', userID);
   	} catch (error) {
   		console.log("Error using storage");
   	}
   	console.log("Recorded the location of a photo: " + photo["uri"]);
     //CameraRoll.saveToCameraRoll(photo["uri"]);
+    const file = {
+	  // `uri` can also be a file system path (i.e. file://)
+	  uri: photo["uri"],
+	  name: "image.jpg",
+	  type: "image/jpeg"
+	}
+	console.log(options);
+    RNS3.put(file, options).then(response => {
+    console.log(response);
+    console.log(response.body);
+  	if (response.status !== 201)
+    	throw new Error("Failed to upload image to S3");
+    CameraRoll.saveToCameraRoll(photo["uri"]);
+  		})
   }
 };
 

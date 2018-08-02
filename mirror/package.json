@@ -11,10 +11,10 @@
   "dependencies": {
     "components": "^0.1.0",
     "expo": "^29.0.0",
-    "face-recognition": "^0.9.3",
     "native-base": "^2.7.2",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-29.0.0.tar.gz",
+    "react-native-aws3": "0.0.8",
     "react-native-gesture-handler": "^1.0.7",
     "react-native-swiper": "^1.5.13"
   }

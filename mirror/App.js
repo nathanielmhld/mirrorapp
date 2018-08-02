@@ -7,6 +7,7 @@ import Swiper from 'react-native-swiper';
 import CameraComponent from './components/camera';
 
 import ConfigCamera from './components/configcamera';
+import MediaComponent from './components/media';
 
 const styles = StyleSheet.create({
   slideDefault:{
@@ -31,21 +32,38 @@ const styles = StyleSheet.create({
   }
 })
 export default class App extends React.Component {
+  state = {
+    userID: null
+  }
+  async componentDidMount(){
+    const value = await AsyncStorage.getItem('userID');
+    this.setState({userID: value})
 
+  }
   render() {
+    const {userID} = this.state
+    if(userID){
       return (
         <Swiper ref='swiper' loop={false} showsPagination={false} index={0} removeClippedSubviews={true}>
         <View style={{flex: 1}}>
           <CameraComponent>
           </CameraComponent>
         </View>
-        <View style={styles.slide1}>
-          <Text style={styles.text}>Beautiful</Text>
+        <View style={{flex: 1}}>
+          <MediaComponent>
+          </MediaComponent>
           
         </View>
         
       </Swiper>
       );
-      
+    }else{
+      return (
+      <View style={{flex: 1}}>
+          <ConfigCamera>
+          </ConfigCamera>
+        </View>
+        );
     }
+  }
 }
