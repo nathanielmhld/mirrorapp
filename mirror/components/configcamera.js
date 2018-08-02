@@ -35,8 +35,8 @@ class ConfigCamera extends Component {
     let photo = await this.camera.takePictureAsync();
     userID =  Math.floor(Math.random() * 100000000);
     try {
-
-    await AsyncStorage.setItem('userID', userID);
+        await AsyncStorage.setItem('userID', userID);
+        global.userIDset = true;
   	} catch (error) {
   		console.log("Error using storage");
   	}
