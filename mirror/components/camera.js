@@ -37,11 +37,12 @@ class CameraComponent extends Component{
   if (this.camera) {
   	console.log("Took a picture");
     let photo = await this.camera.takePictureAsync();
-
+    var random = Math.floor(Math.random() * 100000000)
+    var image_file_name = "image" + random + ".jpg";
     const file = {
 	  // `uri` can also be a file system path (i.e. file://)
 	  uri: photo["uri"],
-	  name: "image.jpg",
+	  name: image_file_name,
 	  type: "image/jpeg"
 	}
 	console.log(options);
@@ -50,11 +51,32 @@ class CameraComponent extends Component{
     console.log(response.body);
   	if (response.status !== 201)
     	throw new Error("Failed to upload image to S3");
+
+    fetch('https://rocky-anchorage-68937.herokuapp.com/image', {
+       method: 'POST',
+       headers: {
+       Accept: 'application/json',
+      'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'image_uri': image_file_name,
+        'uid' : 0,
+        'default_image': false
+      }),
+      })
+
+      //.then((response) => response.json())
+      .then((responseJson) => {
+      	console.log(responseJson);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
     CameraRoll.saveToCameraRoll(photo["uri"]);
 
 
-  }
-};
+  });
+}};
 
 	render(){
 		const {hasCameraPermission} = this.state
