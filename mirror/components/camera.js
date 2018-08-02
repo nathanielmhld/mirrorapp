@@ -40,7 +40,7 @@ class CameraComponent extends Component{
 
 			<View style={{flex:1}}>
 				<Camera style={{flex:1}} type={this.state.type} ref={ref => { this.camera = ref; }}>
-				<View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between'}}>
+				<View style={{position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'}}>
 					<TouchableOpacity onPress={this.snap}>
 					<MaterialCommunityIcons name="circle-outline" style={{color:'white', fontSize: 100}}></MaterialCommunityIcons>
 					</TouchableOpacity>

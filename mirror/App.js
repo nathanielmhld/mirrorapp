@@ -41,9 +41,7 @@ export default class App extends React.Component {
         <View style={styles.slide1}>
           <Text style={styles.text}>Beautiful</Text>
         </View>
-        <View style={styles.slide1}>
-          <Text style={styles.text}>And simple</Text>
-        </View>
+        
       </Swiper>
       );
 
