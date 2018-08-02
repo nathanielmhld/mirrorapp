@@ -99,6 +99,12 @@ class CameraComponent extends Component{
 
 			<View style={{flex:1}}>
 				<Camera style={{flex:1}} type={this.state.type} ref={ref => { this.camera = ref; }}>
+				<View style={{position: 'absolute', left: 0, top: 15}}>
+					<TouchableOpacity onPress={this.props.method}>
+					<MaterialCommunityIcons name="backup-restore" style={{color:'white', fontSize: 50}}></MaterialCommunityIcons>
+					</TouchableOpacity>
+				</View>
+
 				<View style={{position: 'absolute', left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'}}>
 					<TouchableOpacity onPress={this.snap}>
 					<MaterialCommunityIcons name="circle-outline" style={{color:'white', fontSize: 100}}></MaterialCommunityIcons>

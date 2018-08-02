@@ -36,7 +36,8 @@ class ConfigCamera extends Component {
     userID =  String(Math.floor(Math.random() * 1000));
     try {
         await AsyncStorage.setItem('userID', userID);
-        global.userIDset = true;
+        this.props.method()
+        
   	} catch (error) {
   		console.log("Error using storage");
   	}
@@ -75,9 +76,8 @@ class ConfigCamera extends Component {
     .catch((error) => {
       console.error(error);
     });
-
-    this.forceUpdate();
   		});
+
 
   }
 };

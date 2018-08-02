@@ -40,12 +40,29 @@ export default class App extends React.Component {
       userID: -1
     }
     global.userIDset = false;
+    this.configure = this.configure.bind(this);
+    this.reconfigure = this.reconfigure.bind(this);
+
 
   }
-  async componentDidMount(){
+ /* async componentDidMount(){
     const value = await AsyncStorage.getItem('userID');
     this.setState({userID: value})
     console.log(value)
+  }*/
+
+  async reconfigure(){
+    await AsyncStorage.removeItem('userID');
+    global.userIDset = false;
+    this.setState({userID: -1})
+
+  }
+  async configure(){
+    global.userIDset = true;
+    const value = await AsyncStorage.getItem('userID');
+    this.setState({userID: value});
+    console.log("WOWOWOWOW");
+
   }
   render() {
     const {userID} = this.state
@@ -54,7 +71,7 @@ export default class App extends React.Component {
       return (
         <Swiper ref='swiper' loop={false} showsPagination={false} index={0} removeClippedSubviews={true}>
         <View style={{flex: 1}}>
-          <CameraComponent>
+          <CameraComponent method={this.reconfigure}>
           </CameraComponent>
         </View>
         <View style={{flex: 1}}>
@@ -69,7 +86,7 @@ export default class App extends React.Component {
 
       return (
       <View style={{flex: 1}}>
-          <ConfigCamera>
+          <ConfigCamera method={this.configure}>
           </ConfigCamera>
         </View>
         );
