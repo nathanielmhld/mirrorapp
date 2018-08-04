@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {View, Text, StyleSheet, TouchableOpacity, CameraRoll, AsyncStorage} from "react-native";
-import {Camera, Permissions, GestureHandler} from 'expo'
+import {Camera, Permissions, GestureHandler, Location} from 'expo'
 import {Container, Content, Header, Item, Icon, Input, Button } from "native-base"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
@@ -21,24 +21,27 @@ const options = {
 class CameraComponent extends Component{
 
 	state = {
-		hasCameraPermission: null,
-		hasPhotosPermission: null,
+		Permission: null,
 		type: Camera.Constants.Type.back,
 	}
 
 
-	async componentWillMount(){
-		const {status} = await Permissions.askAsync(Permissions.CAMERA);
-		await Permissions.askAsync(Permissions.CAMERA_ROLL);
-		this.setState({hasCameraPermission: status === 'granted'})
+	async componentDidMount(){
+		a = await Permissions.askAsync(Permissions.CAMERA);
+		b = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+		c = await Permissions.askAsync(Permissions.LOCATION);
+		this.setState({Permission: a && b && c});
 
 	}
 
-	snap = async () => {
+snap = async () => {
   if (this.camera) {
 
     let photo = await this.camera.takePictureAsync();
     let userId = await AsyncStorage.getItem('userID');
+    let location = await Location.getCurrentPositionAsync({});
+    var latitude = location.coords.latitude;
+    var longitude = location.coords.longitude;
 
     var random = Math.floor(Math.random() * 100000000)
     var image_file_name = "image" + random + ".jpg";
@@ -68,7 +71,9 @@ class CameraComponent extends Component{
       body: JSON.stringify({
         'image_uri': image_file_name,
         'uid' : userId,
-        'default_image': false
+        'default_image': false,
+        'latitude': latitude,
+        'longitude': longitude
       }),
       })
 
@@ -86,12 +91,12 @@ class CameraComponent extends Component{
 
 
 	render(){
-		const {hasCameraPermission} = this.state
-		if(hasCameraPermission === null)
+		const {Permission} = this.state
+		if(Permission === null)
 		{
 			return <View />
 		}
-		else if(hasCameraPermission === false)
+		else if(Permission === false)
 		{
 			return <Text> No access to camera </Text>
 		}else{

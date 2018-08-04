@@ -1,9 +1,25 @@
 import React, { Component } from "react";
 import {View, Text, StyleSheet, CameraRoll, AsyncStorage, Image, TouchableOpacity, ImageBackground} from "react-native";
-import {Camera, Permissions, GestureHandler} from 'expo'
+import {Camera, Permissions, GestureHandler, Location} from 'expo'
 import {Container, Content, Header, Item, Icon, Input, Button } from "native-base"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import { RNS3 } from 'react-native-aws3';
+
+
+const styles = StyleSheet.create({
+  slideDefault: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#9DD6EB'
+  },
+  text: {
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  }
+})
 
 class MediaComponent extends Component{
 
@@ -12,29 +28,63 @@ class MediaComponent extends Component{
     super(props);
 
     this.state = {
-      displayphoto: "https://mirrormediacontent.s3.amazonaws.com/uploads%2Fimage.jpg"
+      displayphotos: [],
+      displayphoto: null,
+      displayindex: 0,
+	  location: null
     }
-    var intervalID = window.setInterval(checkServer, 10000);
-    function checkServer(){
-    	console.log('hello')
+    this.checkServer = this.checkServer.bind(this);
     }
-	}
+	
+    async componentWillMount() {
+    var intervalID = window.setInterval(this.checkServer, 10000); 
+  	}
+  	
+  	async checkServer(){
+    	let location = await Location.getCurrentPositionAsync({});
+    	this.setState({location: location});
+    	var latitude = this.state.location.coords.latitude;
+    	var longitude = this.state.location.coords.longitude;
+    	
+    	
+
+
+
+    	//Appropriate server call goes here. Updates are made to the displayphotos list
+    	//example_____
+    	this.setState({displayphotos: ["https://images.pexels.com/photos/708392/pexels-photo-708392.jpeg?auto=compress&cs=tinysrgb&h=350"]});
+    	//______
+
+
+    	console.log(latitude + " , " + longitude);
+    }
+
+    
+
 	async scrollForward(e){
-		this.setState({displayphoto: "https://s3-us-west-1.amazonaws.com/mirrormediacontent/uploads/image207.jpg"});
+		if(this.state.displayindex < this.state.displayphotos.length - 1){
+			this.setState({displayindex: this.state.displayindex + 1
+						});
+		}
+		
 	}
 	async scrollBack(e){
-		this.setState({displayphoto: "https://mirrormediacontent.s3.amazonaws.com/uploads%2Fimage.jpg"});
+		if(this.state.displayindex > 0){
+			this.setState({displayindex: this.state.displayindex - 1
+						});
+		}
 	}
 	async save(e){
-		console.log(this.state.displayphoto);
-		CameraRoll.saveToCameraRoll(this.state.displayphoto);
+		console.log(this.state.displayphotos);
+		CameraRoll.saveToCameraRoll(this.state.displayphotos);
 	}
-
+	
 	render(){
+		if (this.state.displayphotos.length != 0){
 			return(
 			<View style={{flex:1}}>
 				<ImageBackground style={{flex: 1, flexDirection: 'row'}}
-				source={{uri: this.state.displayphoto}} alt="Image1">
+				source={{uri: this.state.displayphotos[this.state.displayindex]}} alt="Image of you!">
 				
 				<TouchableOpacity style={{width: "30%", height: "100%",  opacity: 0, backgroundColor: '#FFFFFF'}} onPress={e => this.scrollBack(e)}>
 				
@@ -52,8 +102,17 @@ class MediaComponent extends Component{
 			</View>
 
 			)
+		}else{
+			return(
+			<View style={styles.slideDefault}>
+                <Text style={styles.text}>No candids yet!</Text>
+              </View>
+              )
+
+		}
 		}
 	}
+
 
 
 
