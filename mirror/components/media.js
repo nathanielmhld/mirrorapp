@@ -84,10 +84,11 @@ class MediaComponent extends Component{
 			return(
 			<View style={{flex:1}}>
 				<ImageBackground style={{flex: 1, flexDirection: 'row'}}
+				
 				source={{uri: this.state.displayphotos[this.state.displayindex]}} alt="Image of you!">
 				
 				<TouchableOpacity style={{width: "30%", height: "100%",  opacity: 0, backgroundColor: '#FFFFFF'}} onPress={e => this.scrollBack(e)}>
-				
+
 				</TouchableOpacity>
 				<TouchableOpacity style={{width: "70%", height: "100%", opacity: 0, backgroundColor: '#FFFFFF'}} onPress={e => this.scrollForward(e)}>
 				</TouchableOpacity>
