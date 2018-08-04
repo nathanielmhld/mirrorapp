@@ -52,12 +52,22 @@ class MediaComponent extends Component{
 
     	//Appropriate server call goes here. Updates are made to the displayphotos list
     	//example_____
-    	this.setState({displayphotos: ["https://images.pexels.com/photos/708392/pexels-photo-708392.jpeg?auto=compress&cs=tinysrgb&h=350"]});
+    	this.setState({displayphotos: ["https://s3-us-west-1.amazonaws.com/mirrormediacontent/uploads/image18259145.jpg", 
+    									"https://s3-us-west-1.amazonaws.com/mirrormediacontent/uploads/image.jpg",
+    									"https://s3-us-west-1.amazonaws.com/mirrormediacontent/uploads/image207.jpg",
+    									"https://s3-us-west-1.amazonaws.com/mirrormediacontent/uploads/image312.jpg"]});
     	//______
 
 
+    	this.handleLibraryImages(this.state.displayphotos);
     	console.log(latitude + " , " + longitude);
     }
+
+
+  handleLibraryImages(libs) {
+  const libraryImages = libs.map(lib => Image.prefetch(lib));
+  Promise.all(libraryImages)
+}
 
     
 
@@ -75,8 +85,7 @@ class MediaComponent extends Component{
 		}
 	}
 	async save(e){
-		console.log(this.state.displayphotos);
-		CameraRoll.saveToCameraRoll(this.state.displayphotos);
+		CameraRoll.saveToCameraRoll(this.state.displayphotos[this.state.displayindex]);
 	}
 	
 	render(){
@@ -84,7 +93,7 @@ class MediaComponent extends Component{
 			return(
 			<View style={{flex:1}}>
 				<ImageBackground style={{flex: 1, flexDirection: 'row'}}
-				
+
 				source={{uri: this.state.displayphotos[this.state.displayindex]}} alt="Image of you!">
 				
 				<TouchableOpacity style={{width: "30%", height: "100%",  opacity: 0, backgroundColor: '#FFFFFF'}} onPress={e => this.scrollBack(e)}>

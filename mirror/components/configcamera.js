@@ -24,7 +24,7 @@ class ConfigCamera extends Component {
 
 	}
 
-	async componentWillMount(){
+	async componentDidMount(){
 		const {status} = await Permissions.askAsync(Permissions.CAMERA);
 		await Permissions.askAsync(Permissions.CAMERA_ROLL);
 		this.setState({hasCameraPermission: status === 'granted'})
