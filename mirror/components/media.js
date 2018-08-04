@@ -59,15 +59,10 @@ class MediaComponent extends Component{
     	//______
 
 
-    	this.handleLibraryImages(this.state.displayphotos);
     	console.log(latitude + " , " + longitude);
     }
 
 
-  handleLibraryImages(libs) {
-  const libraryImages = libs.map(lib => Image.prefetch(lib));
-  Promise.all(libraryImages)
-}
 
     
 
