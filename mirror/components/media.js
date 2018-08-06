@@ -43,12 +43,33 @@ class MediaComponent extends Component{
   	async checkServer(){
     	let location = await Location.getCurrentPositionAsync({});
     	this.setState({location: location});
+    	let userId = await AsyncStorage.getItem('userID');
     	var latitude = this.state.location.coords.latitude;
     	var longitude = this.state.location.coords.longitude;
-    	
+    	var current = new Date().toLocaleString();
     	
 
+    	fetch('https://rocky-anchorage-68937.herokuapp.com/return', {
+       method: 'POST',
+       headers: {
+       Accept: 'application/json',
+      'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'uid' : userId,
+        'latitude': latitude,
+        'longitude': longitude,
+        'timestamp': current
+      }),
+      })
 
+      //.then((response) => response.json())
+      .then((responseJson) => {
+      	//console.log(responseJson);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 
     	//Appropriate server call goes here. Updates are made to the displayphotos list
     	//example_____

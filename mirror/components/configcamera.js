@@ -7,10 +7,10 @@ import { RNS3 } from 'react-native-aws3';
 
 const options = {
   keyPrefix: "uploads/",
-  bucket: "mirrormediacontent",
-  region: "us-west-1",
-  accessKey: "AKIAJ4F5SKLYMHOXOJMQ",
-  secretKey: "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",
+  bucket: "mirrormediacontent1",
+  region: "us-east-1",
+  accessKey: "",
+  secretKey: "",
   successActionStatus: 201,
   contentType: "image/jpeg"
 }

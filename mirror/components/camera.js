@@ -8,8 +8,8 @@ import { RNS3 } from 'react-native-aws3';
 
 const options = {
   keyPrefix: "uploads/",
-  bucket: "mirrormediacontent",
-  region: "us-west-1",
+  bucket: "mirrormediacontent1",
+  region: "us-east-1",
   accessKey: "",
   secretKey: "",
   successActionStatus: 201,
@@ -42,11 +42,12 @@ snap = async () => {
     let location = await Location.getCurrentPositionAsync({});
     var latitude = location.coords.latitude;
     var longitude = location.coords.longitude;
+    var current = new Date().toLocaleString();
 
     var random = Math.floor(Math.random() * 100000000)
     var image_file_name = "image" + random + ".jpg";
 
-    console.log("Took a picture: " + photo["uri"]);
+    console.log("Took a picture: " + photo["uri"] + " at " + current);
 
     const file = {
 	  // `uri` can also be a file system path (i.e. file://)
@@ -73,7 +74,8 @@ snap = async () => {
         'uid' : userId,
         'default_image': false,
         'latitude': latitude,
-        'longitude': longitude
+        'longitude': longitude,
+        'timestamp': current
       }),
       })
 
