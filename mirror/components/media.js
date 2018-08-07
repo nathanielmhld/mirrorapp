@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import {View, Text, StyleSheet, CameraRoll, AsyncStorage, Image, TouchableOpacity, ImageBackground} from "react-native";
+import {View, Text, StyleSheet, CameraRoll, AsyncStorage, TouchableOpacity, ImageBackground} from "react-native"; //image
 import {Camera, Permissions, GestureHandler, Location} from 'expo'
 import {Container, Content, Header, Item, Icon, Input, Button } from "native-base"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import { RNS3 } from 'react-native-aws3';
+import {Image, CacheManager} from "react-native-expo-image-cache";
 
 
 const styles = StyleSheet.create({
@@ -100,7 +101,7 @@ class MediaComponent extends Component{
 			<View style={{flex:1}}>
 				<ImageBackground style={{flex: 1, flexDirection: 'row'}}
 
-				source={{uri: this.state.displayphotos[this.state.displayindex]}} alt="Image of you!">
+				source={require('./../assets/icon.png'), {CacheManager.get(this.state.displayphotos[this.state.displayindex]).getPath()}} alt="Image of you!">
 
 				<TouchableOpacity style={{width: "30%", height: "100%",  opacity: 0, backgroundColor: '#FFFFFF'}} onPress={e => this.scrollBack(e)}>
 

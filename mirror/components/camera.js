@@ -10,8 +10,8 @@ const options = {
   keyPrefix: "uploads/",
   bucket: "mirrormediacontent1",
   region: "us-east-1",
-  accessKey: "AKIAIXVHTM7IPFBNTNMA",
-  secretKey: "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",
+  accessKey: "",
+  secretKey: "",
   successActionStatus: 201,
   contentType: "image/jpeg"
 }
