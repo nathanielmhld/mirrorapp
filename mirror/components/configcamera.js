@@ -9,8 +9,8 @@ const options = {
   keyPrefix: "uploads/",
   bucket: "mirrormediacontent1",
   region: "us-east-1",
-  accessKey: "",
-  secretKey: "",
+  accessKey: "AKIAIXVHTM7IPFBNTNMA",
+  secretKey: "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",
   successActionStatus: 201,
   contentType: "image/jpeg"
 }
@@ -37,7 +37,7 @@ class ConfigCamera extends Component {
     try {
         await AsyncStorage.setItem('userID', userID);
         this.props.method()
-        
+
   	} catch (error) {
   		console.log("Error using storage");
   	}
@@ -56,6 +56,16 @@ class ConfigCamera extends Component {
     console.log(response.body);
   	if (response.status !== 201)
     	throw new Error("Failed to upload image to S3");
+    })
+      //.then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+
     fetch('https://rocky-anchorage-68937.herokuapp.com/image', {
        method: 'POST',
        headers: {
@@ -65,20 +75,9 @@ class ConfigCamera extends Component {
       body: JSON.stringify({
         'image_uri': image_file_name,
         'uid' : userID,
-        'default_image': true
+        'default_image': true,
       }),
-      })
-
-      //.then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-    })
-    .catch((error) => {
-      console.error(error);
     });
-  		});
-
-
   }
 };
 

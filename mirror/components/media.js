@@ -35,11 +35,11 @@ class MediaComponent extends Component{
     }
     this.checkServer = this.checkServer.bind(this);
     }
-	
+
     async componentWillMount() {
-    var intervalID = window.setInterval(this.checkServer, 10000); 
+    var intervalID = window.setInterval(this.checkServer, 10000);
   	}
-  	
+
   	async checkServer(){
     	let location = await Location.getCurrentPositionAsync({});
     	this.setState({location: location});
@@ -47,37 +47,24 @@ class MediaComponent extends Component{
     	var latitude = this.state.location.coords.latitude;
     	var longitude = this.state.location.coords.longitude;
     	var current = new Date().toLocaleString();
-    	
-
-    	fetch('https://rocky-anchorage-68937.herokuapp.com/return', {
-       method: 'POST',
+    	let url = 'https://rocky-anchorage-68937.herokuapp.com/similar/' + userId + '/' + latitude + '/' + longitude + '/' + 'time';
+    	console.log(url);
+       var g = fetch(url, {
+       method: 'GET',
        headers: {
        Accept: 'application/json',
       'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        'uid' : userId,
-        'latitude': latitude,
-        'longitude': longitude,
-        'timestamp': current
-      }),
-      })
-
-      //.then((response) => response.json())
-      .then((responseJson) => {
-      	//console.log(responseJson);
-    })
-    .catch((error) => {
+      }).then((responseJSON) => responseJSON.json())
+      .then((response) => {
+      	console.log("starting resposne data");
+      	console.log(response);
+      	console.log(response["name"]);
+      	this.setState({displayphotos: ["https://s3.amazonaws.com/mirrormediacontent1/" + response["name"]]});
+    }).catch((error) => {
       console.error(error);
     });
 
-    	//Appropriate server call goes here. Updates are made to the displayphotos list
-    	//example_____
-    	this.setState({displayphotos: ["https://s3-us-west-1.amazonaws.com/mirrormediacontent/uploads/image18259145.jpg", 
-    									"https://s3-us-west-1.amazonaws.com/mirrormediacontent/uploads/image.jpg",
-    									"https://s3-us-west-1.amazonaws.com/mirrormediacontent/uploads/image207.jpg",
-    									"https://s3-us-west-1.amazonaws.com/mirrormediacontent/uploads/image312.jpg"]});
-    	//______
 
 
     	console.log(latitude + " , " + longitude);
@@ -85,14 +72,14 @@ class MediaComponent extends Component{
 
 
 
-    
+
 
 	async scrollForward(e){
 		if(this.state.displayindex < this.state.displayphotos.length - 1){
 			this.setState({displayindex: this.state.displayindex + 1
 						});
 		}
-		
+
 	}
 	async scrollBack(e){
 		if(this.state.displayindex > 0){
@@ -103,7 +90,7 @@ class MediaComponent extends Component{
 	async save(e){
 		CameraRoll.saveToCameraRoll(this.state.displayphotos[this.state.displayindex]);
 	}
-	
+
 	render(){
 		if (this.state.displayphotos.length != 0){
 			return(
@@ -111,7 +98,7 @@ class MediaComponent extends Component{
 				<ImageBackground style={{flex: 1, flexDirection: 'row'}}
 
 				source={{uri: this.state.displayphotos[this.state.displayindex]}} alt="Image of you!">
-				
+
 				<TouchableOpacity style={{width: "30%", height: "100%",  opacity: 0, backgroundColor: '#FFFFFF'}} onPress={e => this.scrollBack(e)}>
 
 				</TouchableOpacity>
