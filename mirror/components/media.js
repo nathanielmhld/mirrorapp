@@ -60,7 +60,10 @@ class MediaComponent extends Component{
       	console.log("starting resposne data");
       	console.log(response);
       	console.log(response["name"]);
-      	this.setState({displayphotos: ["https://s3.amazonaws.com/mirrormediacontent1/" + response["name"]]});
+        if(this.state.displayphotos.indexOf("https://s3.amazonaws.com/mirrormediacontent1/" + response["name"]) == -1){
+      	this.setState({displayphotos: this.state.displayphotos.concat("https://s3.amazonaws.com/mirrormediacontent1/" + response["name"])});
+        console.log("HELLO, photo is: " + "https://s3.amazonaws.com/mirrormediacontent1/" + response["name"]);
+      }
     }).catch((error) => {
       console.error(error);
     });
