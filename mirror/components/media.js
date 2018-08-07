@@ -44,8 +44,8 @@ class MediaComponent extends Component{
     	let location = await Location.getCurrentPositionAsync({});
     	this.setState({location: location});
     	let userId = await AsyncStorage.getItem('userID');
-    	var latitude = this.state.location.coords.latitude;
-    	var longitude = this.state.location.coords.longitude;
+    	var latitude = location.coords.latitude;
+    	var longitude = location.coords.longitude;
     	var current = new Date().toLocaleString();
     	let url = 'https://rocky-anchorage-68937.herokuapp.com/similar/' + userId + '/' + latitude + '/' + longitude + '/' + 'time';
     	console.log(url);
